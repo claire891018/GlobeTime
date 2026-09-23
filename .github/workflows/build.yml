@@ -1,0 +1,57 @@
+name: Build GlobeTime
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build app
+        run: |
+          xcodebuild \
+            -project Zonic.xcodeproj \
+            -scheme Zonic \
+            -configuration Release \
+            -destination "platform=macOS" \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            clean build
+
+      - name: Sign and package app
+        run: |
+          codesign --force --deep --sign - build/Build/Products/Release/GlobeTime.app
+          codesign --verify --deep --strict build/Build/Products/Release/GlobeTime.app
+          mkdir -p dist
+          ditto -c -k --sequesterRsrc --keepParent \
+            build/Build/Products/Release/GlobeTime.app \
+            dist/GlobeTime.app.zip
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: GlobeTime-macOS
+          path: dist/GlobeTime.app.zip
+          if-no-files-found: error
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            dist/GlobeTime.app.zip \
+            --title "GlobeTime ${{ github.ref_name }}" \
+            --generate-notes

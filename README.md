@@ -17,6 +17,15 @@ you use most one click away.
 - macOS 14 Sonoma or newer
 - Xcode 15 or newer for development
 
+## Download
+
+Download `GlobeTime.app.zip` from the
+[latest release](https://github.com/claire891018/GlobeTime/releases/latest),
+unzip it, and move `GlobeTime.app` to the Applications folder.
+
+The app is ad-hoc signed rather than notarized. On first launch, macOS may ask
+you to approve it in **System Settings > Privacy & Security**.
+
 ## Build and Run
 
 1. Clone this repository.
