@@ -1,90 +1,41 @@
-# Zonic
+# GlobeTime
 
-A macOS Menu Bar application that displays the current time for the cities in different timezones across the world. Quickly search for cities and add them to your favorites for instant access to their local time.
+GlobeTime is a lightweight macOS menu bar app for checking local times around
+the world. Search for a city, add it to your favorites, and keep the time zones
+you use most one click away.
 
-<table style="border: none" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="50%" align="center">
-      <img src="./Assets/collapsed.png" alt="collapsed" />
-    </td>
-    <td width="50%" align="center">
-      <img src="./Assets/expanded.png" alt="collapsed" />
-    </td>
-  </tr>
-</table>
+## Features
 
-## Installation
+- Native macOS menu bar experience with a globe icon
+- Live local time for favorite cities
+- Searchable worldwide city database
+- Add and remove favorites
+- No Dock icon and no account required
 
-> Supported on macOS 14 (Sonoma) or newer.
+## Requirements
 
-1.  **Install with Homebrew:**
+- macOS 14 Sonoma or newer
+- Xcode 15 or newer for development
 
-    ```bash
-    brew tap AbhayVAshokan/tools
-    brew install --cask zonic
-    ```
+## Build and Run
 
-    **Note:** Zonic is currently unverified as I do not own an Apple Developer account. When you first try to open the app, macOS might display a warning stating "Apple could not verify that Zonic is free of malware." To bypass this:
-    - Go to **System Settings** > **Privacy & Security**.
-    - Scroll down and click the **Open Anyway** button, which will appear briefly after your attempt to open the app.
+1. Clone this repository.
+2. Open `Zonic.xcodeproj` in Xcode.
+3. Select the `Zonic` scheme and the `My Mac` destination.
+4. Press `Command-R`.
 
-2.  **Add to Login Items (Optional):**
-    For Zonic to launch automatically when you log in, add it to your Login Items:
-    - Open **System Settings** (or System Preferences).
-    - Go to **General** > **Login Items**.
-    - Click the **+** button under "Open at Login" and select `Zonic` from your `/Applications` folder.
+GlobeTime will appear as a globe in the menu bar. Click it to search for cities
+and manage favorites. The built app is named `GlobeTime.app`.
 
-## Data Source
+## Data
 
-The `db.sqlite3` database is constructed from information sourced from Wikidata, compiled through the [dr5hn/countries-states-cities-database](https://github.com/dr5hn/countries-states-cities-database) project.
+Favorite cities are stored locally in the app's Application Support directory.
+The included location database is sourced from Wikidata and compiled through
+[countries-states-cities-database](https://github.com/dr5hn/countries-states-cities-database).
 
-## Development
+## Acknowledgments
 
-### Prerequisites
-
-- macOS
-- Xcode
-
-### Build and Run
-
-1.  **Clone the repository:**
-    ```bash
-    git clone https://gitlab.com/AbhayVAshokan/Zonic.git
-    cd Zonic
-    ```
-2.  **Open in Xcode:**
-    Open the `Zonic.xcodeproj` file in Xcode.
-3.  **Run the application:**
-    Select a macOS target (e.g., "My Mac") and click the "Run" button (Cmd + R).
-
-The application will appear in your macOS menu bar. Click on the menu bar icon to interact with it.
-
-## Schema
-
-### `places` Table
-
-| Column   | Type     | Constraints               |
-| :------- | :------- | :------------------------ |
-| id       | INTEGER  | PRIMARY KEY AUTOINCREMENT |
-| name     | TEXT     | NOT NULL                  |
-| timezone | TIMEZONE | NOT NULL                  |
-| flag     | TEXT     | NOT NULL                  |
-| type     | TEXT     | NOT NULL                  |
-
-### `favorites` Table
-
-| Column     | Type     | Constraints                                 |
-| :--------- | :------- | :------------------------------------------ |
-| id         | INTEGER  | PRIMARY KEY AUTOINCREMENT                   |
-| place_id   | INTEGER  | NOT NULL, FOREIGN KEY REFERENCES places(id) |
-| label      | TEXT     | NOT NULL                                    |
-| created_at | DATETIME | NOT NULL DEFAULT CURRENT_TIMESTAMP          |
-
-## Roadmap
-
-- Allow editing of favorite labels.
-- Auto-focus search text field on appear.
-- Reduce bundle size of the bundle by using a compressed DB.
-- Potentially allow reordering of favorites.
-- More robust error handling and user feedback.
-- Automatically add App to "Login Items"
+GlobeTime is based on [Zonic](https://github.com/AbhayVAshokan/Zonic) by
+Abhay V Ashokan. The original source code is available under the MIT License.
+The included database is available under the ODC Open Database License 1.0.
+See [LICENSE](LICENSE) for the complete notices.

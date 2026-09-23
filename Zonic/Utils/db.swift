@@ -5,8 +5,15 @@ func loadDb() -> Connection? {
   // TODO: reduce bundle size by shipping db.sqlite3.gz (5MB) instead of db.sqlite3 (19.6MB)
   do {
     let fileManager = FileManager.default
-    let documentDirectory = try fileManager.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-    let fileURL = documentDirectory.appendingPathComponent("db.sqlite3")
+    let applicationSupport = try fileManager.url(
+      for: .applicationSupportDirectory,
+      in: .userDomainMask,
+      appropriateFor: nil,
+      create: true
+    )
+    let appDirectory = applicationSupport.appendingPathComponent("GlobeTime", isDirectory: true)
+    try fileManager.createDirectory(at: appDirectory, withIntermediateDirectories: true)
+    let fileURL = appDirectory.appendingPathComponent("db.sqlite3")
     
     if !fileManager.fileExists(atPath: fileURL.path) {
       if let bundleURL = Bundle.main.url(forResource: "db", withExtension: "sqlite3") {
