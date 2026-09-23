@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Build app
         run: |
@@ -40,7 +40,7 @@ jobs:
             dist/GlobeTime.app.zip
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: GlobeTime-macOS
           path: dist/GlobeTime.app.zip
